@@ -34,7 +34,7 @@ pytest test_algebraic_connectivity.py -v
 ## Run bug probes
 
 ```bash
-pytest test_bug_probes.py -v -s -W always
+pytest test_bug.py -v -s -W always
 ```
 The `-s -W always` flags are required to see the warning box documenting the API inconsistency finding.
 
