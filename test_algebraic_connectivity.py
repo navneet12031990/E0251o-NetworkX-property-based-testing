@@ -2,6 +2,7 @@
 ================================================================================
 E0 251o (2026) — Property-Based Testing for NetworkX
 Team Members : [NAVNEET CHANDAN]
+SR NUMBER : 13-19-02-19-52-25-1-26109
 Algorithms   : Algebraic Connectivity (λ₂) and Fiedler Vector
                via the Graph Laplacian (networkx.algebraic_connectivity,
                networkx.fiedler_vector)
