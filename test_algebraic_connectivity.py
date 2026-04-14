@@ -67,21 +67,12 @@ quotient of the Laplacian, yields exactly the Fiedler eigenproblem:
         min_{x ⊥ 1, ‖x‖=1}  x^T L x  =  λ₂,    attained at x = Fiedler vector.
 
 This relaxation converts the NP-hard combinatorial search into a
-polynomial-time eigenvector computation — solvable in O(n·m) time via
-Lanczos / LOBPCG iteration.  The Fiedler vector x then provides an
-approximate balanced partition by thresholding at the median of x:
+polynomial-time eigenvector computation — solvable in O(k·m) time via
+Lanczos / LOBPCG iteration(k being number of iteration and m being number of edges).
+The Fiedler vector x then provides an approximate balanced partition by thresholding 
+at the median of x:
 
         S  = { v : x_v < median(x) },    V\\S = { v : x_v ≥ median(x) }
-
-The Cheeger inequality gives a quality guarantee for this approximation:
-
-        h(G) / 2  ≤  λ₂ / (2 · d_max)  ≤  √(2 · h(G))
-
-where h(G) = min_S  cut(S,V\\S) / min(vol(S), vol(V\\S)) is the graph's
-isoperimetric number (Cheeger constant).  In words: λ₂ is sandwiched
-between the true balanced cut value and its square root, so the spectral
-approximation is never more than quadratically worse than optimal — a
-much stronger guarantee than greedy or random approaches.
 
 In summary:
   • Min-cut  → polynomial time, but produces trivially unbalanced splits
@@ -114,9 +105,7 @@ Key facts exploited by the tests below
   • λ₂ = 0   iff  G is disconnected (multiplicity of 0 = # components)
   • Σᵢ xᵢ = 0  (Fiedler vector ⊥ 1-vector, because L·1 = 0)
   • Adding an edge never decreases λ₂ (monotonicity / interlacing)
-  • λ₂ ≤ κ(G) ≤ κ'(G)  where κ, κ' are vertex and edge connectivity
   • λ₂ ≤ n/(n−1) · min_degree  (Mohar's upper bound [2])
-  • h(G)/2 ≤ λ₂/(2·d_max) ≤ √(2·h(G))  (Cheeger inequality, see [2])
   • For a path Pₙ: λ₂ = 2(1 − cos(π/n)) → 0 as n → ∞
   • For a complete graph Kₙ: λ₂ = n  (all non-trivial eigenvalues equal n)
   • Fiedler vector is orthogonal to every vector in ker(L), i.e. to 1
@@ -127,32 +116,26 @@ REAL-WORLD APPLICATIONS
     with minimal inter-board wiring (= cut edges).  Balanced partitioning
     ensures no board is overloaded.  Spectral methods have been industry
     standard since the 1990s (Alpert & Kahng 1995).
-
   • Image segmentation: pixels form a weighted graph (similar pixels get
     high-weight edges).  NCut partitions the image into coherent regions.
     The Fiedler vector of the pixel-similarity Laplacian drives the
     segmentation — basis of the influential Shi & Malik (2000) [3] algorithm
     used in computer vision to this day.
-
   • Parallel computing / mesh partitioning: scientific simulations
     (finite-element, molecular dynamics) distribute a computational mesh
     across processors.  Balanced spectral partitioning minimises
     communication between processors while keeping each processor's
     workload equal — directly impacting simulation wall-clock time.
-
   • Community detection in social networks: spectral clustering on the
     normalised Laplacian identifies densely connected communities.
     λ₂ ≈ 0 signals near-disconnection — a community boundary.
-
   • Network robustness / resilience: λ₂ quantifies how hard it is to
     disconnect the network (higher λ₂ = more robust).  Used to design
     fault-tolerant communication and power grid topologies.
-
   • Epidemic / diffusion speed: the spectral gap controls how fast a
     random walk mixes and how quickly diseases or information spread.
     Expander graphs (large λ₂) are used in cryptography and coding theory
     precisely because information diffuses rapidly across them.
-
   • Sensor network connectivity: wireless networks use λ₂ to certify
     that the network remains connected under random node failures.
 ================================================================================
@@ -764,7 +747,7 @@ class TestWeightScaling:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TEST 6 — INVARIANT: Cheeger / spectral bound  λ₂ ≤ vertex connectivity
+# TEST 6 — INVARIANT: spectral bound  λ₂ ≤ (n / (n-1))*edge connectivity
 # ══════════════════════════════════════════════════════════════════════════════
 
 class TestSpectralBound:
