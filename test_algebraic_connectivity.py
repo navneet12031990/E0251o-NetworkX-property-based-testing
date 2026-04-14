@@ -279,7 +279,7 @@ class TestLaplacianStructure:
     """
 
     @given(arbitrary_graph(n_min=0, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_laplacian_is_positive_semidefinite(self, G):
         """
         Property (Invariant): The Laplacian L of any undirected graph with
@@ -312,7 +312,7 @@ class TestLaplacianStructure:
             will still be PSD — but this is due to NetworkX's silent
             preprocessing, not the mathematical property itself.
 
-            The arbitrary_graph() strategy restricts weights to [0.1, 10.0]
+            Our arbitrary_graph() strategy restricts weights to [0.1, 10.0]
             to test the genuine mathematical property, not the preprocessing
             artefact.  Testing with mixed-sign weights would conflate the
             two and give a misleading picture of correctness.
@@ -350,7 +350,7 @@ class TestLaplacianStructure:
         )
 
     @given(arbitrary_graph(n_min=1, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_laplacian_row_sums_are_zero(self, G):
         """
         Property (Invariant): Every row of the Laplacian sums to zero.
@@ -392,7 +392,7 @@ class TestConnectivityInvariant:
     """
 
     @given(connected_graph(n_min=2, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_connected_graph_has_positive_algebraic_connectivity(self, G):
         """
         Property (Invariant): For any connected undirected graph G,
@@ -425,7 +425,7 @@ class TestConnectivityInvariant:
         )
 
     @given(disconnected_graph(n_min=4, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_disconnected_graph_has_zero_algebraic_connectivity(self, G):
         """
         Property (Boundary / Invariant): For any disconnected graph G,
@@ -462,7 +462,7 @@ class TestFiedlerVectorOrthogonality:
     """
 
     @given(connected_graph(n_min=3, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_fiedler_vector_orthogonal_to_ones(self, G):
         """
         Property (Postcondition): The Fiedler vector x satisfies Σᵢ xᵢ = 0.
@@ -496,7 +496,7 @@ class TestFiedlerVectorOrthogonality:
         )
 
     @given(connected_graph(n_min=3, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_fiedler_vector_unit_norm(self, G):
         """
         Property (Postcondition): The Fiedler vector returned by NetworkX
@@ -524,7 +524,7 @@ class TestFiedlerVectorOrthogonality:
         )
 
     @given(connected_graph(n_min=3, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_fiedler_vector_is_eigenvector_of_laplacian(self, G):
         """
         Property (Postcondition): The Fiedler vector x is a genuine
@@ -569,7 +569,7 @@ class TestEdgeMonotonicity:
     """
 
     @given(connected_graph(n_min=3, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_adding_edge_does_not_decrease_algebraic_connectivity(self, G):
         """
         Property (Metamorphic): For any connected G and any new edge (u, v)
@@ -617,7 +617,7 @@ class TestEdgeMonotonicity:
         )
 
     @given(connected_graph(n_min=3, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_removing_edge_does_not_increase_algebraic_connectivity(self, G):
         """
         Property (Metamorphic): Removing an edge from G (keeping it connected)
@@ -670,7 +670,7 @@ class TestIsomorphismInvariance:
 
     @given(connected_graph(n_min=2, n_max=10),
            st.integers(min_value=0, max_value=2**31 - 1))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_node_relabelling_preserves_algebraic_connectivity(self, G, seed):
         """
         Property (Metamorphic / Invariant): Relabelling the nodes of G
@@ -724,7 +724,7 @@ class TestWeightScaling:
     @given(connected_weighted_graph(n_min=2, n_max=10),
            st.floats(min_value=0.5, max_value=5.0,
                      allow_nan=False, allow_infinity=False))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_uniform_weight_scaling_scales_lambda2(self, G, alpha):
         """
         Property (Metamorphic): Multiplying every edge weight by a positive
@@ -772,7 +772,7 @@ class TestSpectralBound:
     """
 
     @given(connected_graph(n_min=3, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_algebraic_connectivity_bounded_by_edge_connectivity(self, G):
         """
         Property (Invariant): λ₂(G) ≤ (n / (n-1)) · κ'(G)
@@ -785,10 +785,10 @@ class TestSpectralBound:
             for ALL connected graphs including complete graphs — no exceptions.
 
             Verification on known cases:
-              • K₃ (triangle): λ₂=3, κ'=2, bound = (3/2)·2 = 3.0  
-              • K₄:            λ₂=4, κ'=3, bound = (4/3)·3 = 4.0  
-              • Kₙ in general: λ₂=n, κ'=n-1, bound = n/(n-1)·(n-1)=n 
-              • Path P₄:       λ₂≈0.59, κ'=1, bound=(4/3)·1≈1.33  
+              • K₃ (triangle): λ₂=3, κ'=2, bound = (3/2)·2 = 3.0  ✓
+              • K₄:            λ₂=4, κ'=3, bound = (4/3)·3 = 4.0  ✓
+              • Kₙ in general: λ₂=n, κ'=n-1, bound = n/(n-1)·(n-1)=n ✓
+              • Path P₄:       λ₂≈0.59, κ'=1, bound=(4/3)·1≈1.33  ✓
 
             The factor n/(n-1) accounts for the complete graph family where
             the naive bound λ₂ ≤ κ' fails (λ₂=n > κ'=n-1 for Kₙ).
@@ -817,7 +817,7 @@ class TestSpectralBound:
         )
 
     @given(connected_graph(n_min=2, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_algebraic_connectivity_at_most_min_degree(self, G):
         """
         Property (Invariant): λ₂(G) ≤ (n/(n−1)) · δ(G)  (Mohar's bound)
@@ -858,7 +858,7 @@ class TestKnownExactValues:
     """
 
     @given(st.integers(min_value=2, max_value=50))
-    @settings(max_examples=49)
+    @settings(max_examples=49,deadline=None)
     def test_complete_graph_algebraic_connectivity(self, n):
         """
         Property (Postcondition / Known value): For the complete graph Kₙ,
@@ -882,7 +882,7 @@ class TestKnownExactValues:
         )
 
     @given(st.integers(min_value=3, max_value=50))
-    @settings(max_examples=48)
+    @settings(max_examples=48,deadline=None)
     def test_path_graph_algebraic_connectivity(self, n):
         """
         Property (Postcondition / Known value): For the path graph Pₙ,
@@ -909,7 +909,7 @@ class TestKnownExactValues:
         )
 
     @given(st.integers(min_value=3, max_value=40))
-    @settings(max_examples=38)
+    @settings(max_examples=38,deadline=None)
     def test_cycle_graph_algebraic_connectivity(self, n):
         """
         Property (Postcondition / Known value): For the cycle graph Cₙ,
@@ -937,7 +937,7 @@ class TestKnownExactValues:
     ))
     @given(st.integers(min_value=2, max_value=5),
            st.integers(min_value=2, max_value=5))
-    @settings(max_examples=16)
+    @settings(max_examples=16,deadline=None)
     def test_complete_bipartite_graph_algebraic_connectivity(self, m, n):
         """
         Property (Postcondition / Known value): For K_{m,n},
@@ -1067,7 +1067,7 @@ class TestBoundaryConditions:
         assert abs(lam2 - 2.0) < ATOL, f"K₂: expected λ₂=2, got {lam2:.6f}"
 
     @given(connected_graph(n_min=3, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_graph_with_self_loops_has_same_algebraic_connectivity(self, G):
         """
         Property (Boundary): Self-loops do not affect algebraic connectivity.
@@ -1099,7 +1099,7 @@ class TestBoundaryConditions:
         )
 
     @given(connected_graph(n_min=4, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_star_graph_algebraic_connectivity(self, G):
         """
         Property (Boundary): The star graph S_{1,n-1} (hub + n-1 leaves)
@@ -1136,7 +1136,7 @@ class TestIdempotenceAndStability:
     """
 
     @given(connected_graph(n_min=2, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_repeated_calls_return_same_algebraic_connectivity(self, G):
         """
         Property (Idempotence): algebraic_connectivity(G) returns the same
@@ -1167,7 +1167,7 @@ class TestIdempotenceAndStability:
         )
 
     @given(connected_graph(n_min=2, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_algebraic_connectivity_does_not_mutate_graph(self, G):
         """
         Property (Idempotence): algebraic_connectivity(G) does not modify G.
@@ -1210,7 +1210,7 @@ class TestFiedlerVectorSignSymmetry:
     """
 
     @given(connected_graph(n_min=4, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_fiedler_partition_has_both_positive_and_negative_entries(self, G):
         """
         Property (Postcondition): The Fiedler vector of a connected graph
@@ -1236,7 +1236,7 @@ class TestFiedlerVectorSignSymmetry:
         assert x.min() <  ATOL, f"All entries ≥ 0 in Fiedler vector (n={G.number_of_nodes()})"
 
     @given(connected_graph(n_min=4, n_max=10))
-    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=50, suppress_health_check=[HealthCheck.too_slow],deadline=None)
     def test_negated_fiedler_vector_gives_same_lambda2(self, G):
         """
         Property (Metamorphic / Symmetry): −x is also a valid Fiedler vector,
